@@ -11,10 +11,15 @@
 3. Clone this code and build docker with below commands -
 
 docker stop local-httpd
+
 docker rm local-httpd
+
 docker rmi local-httpd
+
 cd {this repo}
+
 docker build --no-cache -t local-httpd .
+
 docker run -d -p 80:80 -p 8443:8443 --name local-httpd --restart always local-httpd
 
 4. Test home page with below URL 
