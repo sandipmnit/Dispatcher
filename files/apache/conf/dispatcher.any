@@ -1,0 +1,181 @@
+# name of the dispatcher
+/name "internet-server"
+
+/farms
+{
+ /publish-farm
+    {
+   # Request headers that should be forwarded to the remote server.
+    /clientheaders
+      {
+      # Forward all request headers that are end-to-end. If you want
+      # to forward a specific set of headers, you'll have to list
+      # them here.
+        $include "clientheaders.any"
+      }
+    /virtualhosts
+      {
+        # entries will be compared against the 'host' request header.
+        # devs can now simulate pi/stage/dev by adding their domains to their hosts files
+        $include "publish-vhosts.any"
+      }
+
+    /renders
+      {
+      /rend01
+        {
+        # hostname or IP of the render
+        /hostname "localhost"
+        # port of the render
+        /port "4503"
+        # Connect timeout in milliseconds, 0 to wait indefinitely
+        # /timeout "0"
+        }
+      }
+
+    /filter
+    {
+      /0001
+      {
+        /glob "*"
+        /type "deny"
+      }
+      /0002
+      {
+        /glob "* /content/*"
+        /type "allow"
+      }
+      /0003
+      {
+        /glob "* /etc/designs/*"
+        /type "allow"
+      }
+      /0004
+      {
+        /glob "* /etc/clientlibs/*"
+        /type "allow"
+      }
+	   /00041
+      {
+        /glob "* /etc.clientlibs/*"
+        /type "allow"
+      }
+	  /00042
+      {
+        /glob "* /conf/*"
+        /type "allow"
+      }
+      /00071
+      {
+        /glob "GET /libs/granite/csrf/token.json*"
+        /type "allow"
+      }
+      /0010
+      {
+        /glob "GET *.tidy.json*"
+        /type "deny"
+      }
+      /0014a
+      {
+        /glob "GET *.*[0-9].json*"
+        /type "deny"
+      }
+      /0014b
+      {
+        /glob "GET *.*[0-9].json*"
+        /type "deny"
+      }
+      /0015
+      {
+        /glob "GET *.feed.xml*"
+        /type "deny"
+      }
+      /0016
+      {
+        /glob "* *.query*"
+        /type "deny"
+      }
+      /0017
+      {
+        /glob "GET *.1.json*"
+        /type "allow"
+      }
+      /0018
+      {
+        /glob "POST *"
+        /type "deny"
+      }
+      /0020
+      {
+        /glob "PUT *"
+        /type "deny"
+      }
+      /0021
+      {
+        /glob "DELETE *"
+        /type "deny"
+      }
+    }
+
+    # the cache is used to store requests from the renders for faster delivery
+    # for a second time.
+    /cache
+    {
+      
+      /docroot "/var/www/html"
+  
+      /statfileslevel "8"
+
+      # caches also authorized data
+      /allowAuthorized "0"
+
+    
+      /rules
+      {
+        /111
+        {
+          /glob "*"
+          /type "allow"
+        }
+        /112
+        {
+          /glob "*.nocache.html"
+          /type "deny"
+        }
+      }
+
+      /invalidate
+       {
+       /0000  { /glob "*" /type "deny" }
+       /0001  { /glob "*.html" /type "allow" }
+      }
+
+      /allowedClients
+      {
+        /deny_all
+        {
+          /glob "*.*.*.*"
+          /type "deny"
+        }
+        /local_instance
+        {
+          /glob "127.0.0.1"
+          /type "allow"
+        }
+        /localhost
+        {
+          /glob "localhost"
+          /type "allow"
+        }
+      }
+   }
+
+    /ignoreUrlParams
+      {
+      /0001 { /glob "*" /type "deny" }
+      /0002 { /glob "q" /type "allow" }
+     }
+
+ }
+
+}
