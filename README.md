@@ -1,5 +1,12 @@
 # Singtel Dispatcher project
 
+# Key Modules
+
+* Dockerfile - list of commands in do to install dispatcher on local
+* htttp.conf - Entry point for apache. added dispatcher module & config here
+* conf/dispatcher.any - dispatcher farm configuration
+* extra/httpd-vhosts.conf - vhost configuration
+
 # How to build & test (tested on Mac on my local)
 
 1. Install & Start Docker App
